@@ -1,0 +1,58 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">CATEGORY MANAGEMENT</h5>
+            <hr>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <div class="card card-body py-3 my-filter">
+                        <form method="get">
+                            {{ category_filter.form }}
+                            <button class="btn btn-sm btn-primary" type="submit">Search Category</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block mb-3 py-2 font-weight-bold"
+                   href="{% url 'category-create' service.slug %}">+ Create Category</a>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="w-25">No.</th>
+                        <th class="w-25">Name</th>
+                        <th>Slug</th>
+                        <th>Image</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for category in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.slug}}</td>
+                            <td><img src="{{ category.image.url }}" width="100"></td>
+                            <td><a class="btn btn-sm btn-info"
+                                href="{% url 'category-update' category.slug %}">Change</a></td>
+                            <td><a class="btn btn-sm btn-danger"
+                                href="{% url 'category-delete' category.slug %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

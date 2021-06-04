@@ -1,0 +1,106 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+    <br>
+    <div class="card card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="card">
+                    <img src="{{ object.image.url }}" alt="IMAGE" class="card-img-top">
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="mr-1 d-flex justify-content-between">
+                    <h5 class="text-info ml-3">{{ object.name }}</h5>
+                    <div>
+                        <a class="btn btn-primary" href="{% url 'product-variant-create' object.slug %}">+ Add Variation</a>
+                        <a class="btn btn-info ml-2" href="{% url 'seller-detail' object.seller.slug %}">Go to Seller</a>
+                    </div>
+                </div>
+                <hr class="my-2">
+                
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row py-1">
+                                <div class="col-3"><span class="text-primary">Seller:</span></div>
+                                <div class="col-9">{{ object.seller.name }}</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-3"><span class="text-primary">Category:</span></div>
+                                <div class="col-9">{{ object.category.name }}</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-3"><span class="text-primary">Price:</span></div>
+                                <div class="col-9">{{ object.price }}</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-3"><span class="text-primary">Description:</span></div>
+                                <div class="col-9">{{ object.description }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            {% if object.variations.all|length %}
+                            {% for variation in object.variations.all %}
+                            <div class="row py-1 mb-2">
+                                <div class="col-2"><span class="text-primary">{{variation.name}}:</span></div>
+                                <div class="col-10 d-flex">
+                                    {% for product_variant in variation.product_variations.all %}
+                                        {% if "color" in variation.name|lower %}
+                                        <span class="border border-dark rounded-circle mr-3 color-circle"
+                                            style="background-color:{{product_variant.value}}"></span>
+                                        {% else %}
+                                        <div style="width: 10%;">{{product_variant.value}}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <h5 class="mt-4 mb-1 ml-4">Product Variations</h5>
+            <hr>
+            
+            {% if object.variations.all|length == 0 %}
+            <div class="card">
+                <div class="card-body text-center">
+                    There are no variations added for this product.
+                </div>
+            </div>
+            {% else %}
+                {% for variant in object.variations.all %}
+                <div class="card card-body mb-2">
+                    <div class="card">
+                        <h5 class="card-header">{{ variant.name|title}} Values
+                            <a href="{% url 'product-variant-delete' variant.id %}" class="btn btn-danger float-right ml-2">Delete</a>
+                            <a href="{% url 'product-variant-update' variant.id %}" class="btn btn-primary float-right">Update</a>
+                        </h5>
+                        <div class="card-body ml-5">
+                            <div class="card-text d-flex py-1">
+                                {% for value in variant.product_variations.all %}
+                                    {% if "color" in variant.name|lower %}
+                                    <div class="border border-dark rounded-circle mr-5 color-circle" style="background-color:{{value}}"></div>
+                                    {% else %}
+                                    <div style="width: 5%;">{{value}}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

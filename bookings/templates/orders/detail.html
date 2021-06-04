@@ -1,0 +1,79 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">ORDER DETAILS</h5>
+            <hr>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="container-fluid pt-4 pb-4">
+                        <div class="row">
+                            <div class="col-6 d-flex">
+                                <h5 class="text-success pl-2">User Name:</h5><h5 class="text-danger ml-5">{{ order.user.full_name }}</h5>
+                            </div>
+                            <div class="col-6 d-flex">
+                                <h5 class="text-success">Seller Name:</h5><h5 class="text-danger ml-5">{{ order.seller.name }}</h5>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Order Item List</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table mt-2">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Name</th>
+                                        <th>Variations</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                
+                                    <tbody>
+                                    {% for order_item in order.order_items.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ order_item.product.name }}</td>
+                                            <td>
+                                                {% for product_variation in order_item.product_variations.all %}
+                                                {{ product_variation.variation.name }}: 
+                                                {% if 'color' in product_variation.variation.name|lower %}
+                                                &nbsp;
+                                                <div class="border border-dark rounded-circle mr-3 color-circle d-inline-block align-middle"
+                                                    style="background-color:{{product_variation.value}};width:25px;height:25px;"></div>
+                                                {% else %}
+                                                {{ product_variation.value }} &nbsp;
+                                                {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ order_item.product.price }}</td>
+                                            <td>{{ order_item.quantity }}</td>
+                                            <td>{{ order_item.get_price }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer text-right">
+                                <b>Total Amount: <b class="text-danger">{{ order.get_total_price }}</b></b>
+                            </div>
+                        </div>
+
+                        <!-- <div class="float-right">
+                            <a class="btn btn-primary mt-3" href="{% url 'booking-list' %}">Back</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

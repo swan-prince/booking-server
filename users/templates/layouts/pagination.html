@@ -1,0 +1,29 @@
+{% load booking_tags %}
+
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?{% param_replace page=1 %}"><span>&laquo;</span></a>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="?{% param_replace page=page_obj.previous_page_number %}">
+            <span>&lsaquo;</span>
+        </a>
+    </li>
+    {% endif %}
+
+    <li class="page-item"><a class="page-link">{{page_obj.number}}</a></li>
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?{% param_replace page=page_obj.next_page_number %}">
+            <span>&rsaquo;</span>
+        </a>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="?{% param_replace page=page_obj.paginator.num_pages %}"><span>&raquo;</span></a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}

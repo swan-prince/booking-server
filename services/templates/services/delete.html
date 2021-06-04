@@ -1,0 +1,22 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md">
+                <div class="card card-body text-center py-4">
+                    <p>Are you sure you want to delete <b>{{ service.name }}</b> service?</p>
+
+                    <form action="{% url 'service-delete' service.id %}" method="POST">
+                        {% csrf_token %}
+
+                        <a class="btn btn-warning mr-3" href="{% url 'service-list' %}">Cancel</a>
+
+                        <button class="btn btn-danger" type="submit">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

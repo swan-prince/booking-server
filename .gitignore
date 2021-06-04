@@ -1,0 +1,14 @@
+*.pyc
+.DS_Store
+.idea/
+venv/
+__pycache__/
+.vscode/
+static/images/
+db.sqlite3
+core/settings.py
+staticfiles/
+logs/
+celerybeat-schedule
+celerybeat-schedule.db
+dump.rdb

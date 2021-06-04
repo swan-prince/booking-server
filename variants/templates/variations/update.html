@@ -1,0 +1,26 @@
+{% extends 'layouts/main.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Update Variation
+            </div>
+            <div class="card-body px-5 pt-4">
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+
+            $('#button-id-cancel').on('click', function(e) {
+                window.location.href = "{% url 'product-detail' object.product.slug %}";
+            });
+        });
+    </script>
+{% endblock %}

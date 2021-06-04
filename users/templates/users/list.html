@@ -1,0 +1,60 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md">
+        <h5 class="mt-5 mb-3 ml-2">USER MANAGEMENT</h5>
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <div class="card card-body py-3 my-filter">
+                    <form method="get">
+                        {{ user_filter.form }}
+                        <button class="btn btn-sm btn-primary" type="submit">Search User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block mb-3 py-2 font-weight-bold" href="{% url 'register' %}">+
+                Create New User</a>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Is_Admin?</th>
+                        <th>Is_Active?</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for user in page_obj %}
+                    <tr>
+                        <td>{{ user.full_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.is_superuser }}</td>
+                        <td>{{ user.is_active }}</td>
+                        <td><a class="btn btn-sm btn-info"
+                                href="{% url 'user-update' user.id %}">Change</a></td>
+                        <td><a class="btn btn-sm btn-danger"
+                                href="{% url 'user-delete' user.id %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            
+            {% include "layouts/pagination.html" %}
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

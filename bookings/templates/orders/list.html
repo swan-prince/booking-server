@@ -1,0 +1,54 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">Order List</h5>
+            <hr>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card card-body py-3 my-filter">
+                        <form method="get">
+                            {{ order_filter.form }}
+                            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <div class="card card-body">
+                
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>User</th>
+                        <th>Seller</th>
+                        <th>Details</th>
+                        <th>Cancel</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for order in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ order.user }}</td>
+                            <td>{{ order.seller }}</td>
+                            <td><a href="{% url 'order-detail' order.id %}">Order Items</a></td>
+                            <td><a class="btn btn-sm btn-warning" href="{% url 'order-cancel' order.id %}">Cancel</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% load static %}
+
+{% load booking_tags %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'dashboard' %}">
+        <img src="{% static 'images/logo.png' %}" height="60" class="d-inline-block align-top ml-2 mr-3" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        {% if request.user.is_superuser %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                       href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% is_active_class 'user-list' %}" href="{% url 'user-list' %}">Users</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% is_active_class 'service-list' %}" href="{% url 'service-list' %}">Services</a>
+                </li>
+
+                {% for service in services %}
+                <li class="nav-item position-relative">
+                    <a class="nav-link {% is_active_class service.slug|pathfor %}" style="cursor: pointer">{{ service.name }}</a>
+                    <ul class="dropdown-menu bg-dark border-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% is_active_class service.slug|pathfor %}" href="{{ service.slug|pathfor }}">Show All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% is_active_class service.slug|pathfor:'category' %}" href="{{ service.slug|pathfor:'category' }}">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% is_active_class service.slug|pathfor:'product' %}" href="{{ service.slug|pathfor:'product' }}">Products</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endfor %}
+
+                
+                <!-- <li class="nav-item position-relative">
+                    <a class="nav-link" style="cursor: pointer;">Bookings</a>
+                    <ul class="dropdown-menu bg-dark border-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Show All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Paid</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Booked</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Cancelled</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Expired</a>
+                        </li>
+
+                    </ul>
+                </li> -->
+
+                <li class="nav-item position-relative">
+                    <a class="nav-link" style="cursor: pointer;">Bookings</a>
+                    <ul class="dropdown-menu bg-dark border-0">
+                        <li class="nav-item">
+                            <a href="{% url 'booking-list' %}" class="nav-link">Active Bookings</a>
+                            <a href="{% url 'booking-history' %}" class="nav-link">Booking History</a>
+                            <a href="{% url 'order-list' %}" class="nav-link">Active Orders</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'review-list' %}">Ratings</a>
+                </li>
+            </ul>
+        {% else %}
+            <div class="text-white font-weight-bold text-center mx-auto">
+                Normal users are not authorized to access the other pages than only this page...
+            </div>
+        {% endif %}
+    </div>
+
+    <span class="hello-msg">Hello, {{ request.user.full_name }}</span>
+    <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+</nav>

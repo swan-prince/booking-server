@@ -1,0 +1,51 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">{{ service.name|upper }} MANAGEMENT</h5>
+            <hr>
+
+            <br>
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block mb-3 py-2 font-weight-bold"
+                   href="{% url 'seller-create' service.slug %}">+ Add New {{ service|title }}</a>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="w-25">No.</th>
+                        <th class="w-25">Name</th>
+                        <th>Slug</th>
+                        <th>Image</th>
+                        <th>View</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for seller in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ seller.name }}</td>
+                            <td>{{ seller.slug}}</td>
+                            <td><img src="{{ seller.image.url }}" width="100"></td>
+                            <td><a class="btn btn-sm btn-info"
+                                href="{% url 'seller-detail' seller.slug %}">Show</a></td>
+                            <td><a class="btn btn-sm btn-warning"
+                                href="{% url 'seller-update' seller.slug %}">Change</a></td>
+                            <td><a class="btn btn-sm btn-danger"
+                                href="{% url 'seller-delete' seller.slug %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

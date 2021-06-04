@@ -1,0 +1,45 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">SERVICE MANAGEMENT</h5>
+            <hr>
+
+            <br>
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block mb-3 py-2 font-weight-bold"
+                   href="{% url 'service-create' %}">+ Add New Service</a>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="w-25">No.</th>
+                        <th class="w-50">Name</th>
+                        <th>Image</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for service in service_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ service.name }}</td>
+                            <td><img src="{{ service.image.url }}" width="100"></td>
+                            <td><a class="btn btn-sm btn-info"
+                                href="{% url 'service-update' service.id %}">Change</a></td>
+                            <td><a class="btn btn-sm btn-danger"
+                                href="{% url 'service-delete' service.id %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

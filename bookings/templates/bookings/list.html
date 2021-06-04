@@ -1,0 +1,72 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">Bookings List</h5>
+            <hr>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card card-body py-3 my-filter">
+                        <form method="get">
+                            {{ booking_filter.form }}
+                            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <div class="card card-body">
+                
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>User</th>
+                        <th>Seller</th>
+                        <th>Table</th>
+                        <th>Guests</th>
+                        <th>Reserved Time</th>
+                        <th>Order Items</th>
+                        <th>Cancel</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for booking in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ booking.user }}</td>
+                            <td>{{ booking.seller }}</td>
+                            {% if booking.table %}
+                            <td>{{ booking.table }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% if booking.guests %}
+                            <td>{{ booking.guests }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% if booking.reserved_time %}
+                            <td>{{ booking.reserved_time_format }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td><a href="{% url 'order-detail' booking.order.id %}">Order Items</a></td>
+                            <td><a class="btn btn-sm btn-warning" href="{% url 'booking-cancel' booking.id %}">Cancel</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

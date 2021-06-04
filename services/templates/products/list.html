@@ -1,0 +1,65 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">PRODUCT MANAGEMENT</h5>
+            <hr>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <div class="card card-body py-3 my-filter">
+                        <form method="get">
+                            {{ product_filter.form }}
+                            <button class="btn btn-sm btn-primary" type="submit">Search Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block mb-3 py-2 font-weight-bold"
+                   href="{% url 'product-create' service.slug %}">+ Create Product</a>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Image</th>
+                        <th>Seller</th>
+                        <th>Category</th>
+                        <th>Details</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for product in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.slug}}</td>
+                            <td><img src="{{ product.image.url }}" width="100"></td>
+                            <td>{{ product.seller.name}}</td>
+                            <td>{{ product.category.name}}</td>
+                            <td><a href="{% url 'product-detail' product.slug %}"
+                                class="btn btn-sm btn-info">View</a></td>
+                            <td><a class="btn btn-sm btn-warning"
+                                href="{% url 'product-update' product.slug %}">Change</a></td>
+                            <td><a class="btn btn-sm btn-danger"
+                                href="{% url 'product-delete' product.slug %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

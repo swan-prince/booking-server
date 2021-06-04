@@ -1,0 +1,56 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md">
+            <h5 class="mt-5 mb-3 ml-2">Ratings</h5>
+            <hr>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card card-body py-3 my-filter">
+                        <form method="get">
+                            {{ review_filter.form }}
+                            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <div class="card card-body">
+                
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>User</th>
+                        <th>Seller</th>
+                        <th>Rating</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for review in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ review.user }}</td>
+                            <td>{{ review.seller }}</td>
+                            <td>{{ review.rating }}</td>
+                            <td><a class="btn btn-sm btn-warning" href="{% url 'review-update' review.id %}">Change</a></td>
+                            <td><a class="btn btn-sm btn-danger"  href="{% url 'review-delete' review.id %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include "layouts/pagination.html" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
